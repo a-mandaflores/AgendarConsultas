@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AgendarConsultas.Model
 {
+    [Table("secretary")]
     public class Secretary
     {
-        public int id { get; set; }
+        [Key]
+        [Column("id")]
+        public int Id { get; set; }
         public Guid Uuid { get; set; } = Guid.NewGuid();
 
         [Column("name")]
@@ -15,5 +19,8 @@ namespace AgendarConsultas.Model
 
         [Column("email")]
         public string Email { get; set; } = string.Empty!;
+
+        public int ClinicId { get; set; }
+        public Clinic Clinic { get; set; } = default!;
     }
 }

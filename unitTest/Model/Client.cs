@@ -7,7 +7,8 @@ namespace AgendarConsultas.Model
     public class Client
     {
         [Key]
-        public int id { get; set; }
+        [Column("id")]
+        public int Id { get; set; }
 
         [Column("uuid")]
         public Guid Uuid { get; set; } = Guid.NewGuid();
@@ -22,5 +23,9 @@ namespace AgendarConsultas.Model
         public string Email { get; set; } = string.Empty!;
 
         public List<Pet> Pets { get; set; } = default!;
+
+        public int ClinicId { get; set; }
+        public Clinic Clinic { get; set; } = default!;
+
     }
 }

@@ -3,14 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AgendarConsultas.Model
 {
+    [Table("consultation")]
     public class Consultation
     {
         [Key]
+        [Column("id")]
         public int Id { get; set; }
 
         [Column("uuid")]
         public Guid Uuid { get; set; } = Guid.NewGuid();
-        public Dictionary<string, DateTime> Schedule { get; set; } = default!;
+
+        [Column("schedule")]
+        public List<DateTime> Schedule { get; set; } = default!;
 
         public int PetId { get; set; }
         public Pet Pet { get; set; } = default!;

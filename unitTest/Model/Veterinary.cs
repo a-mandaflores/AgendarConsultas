@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AgendarConsultas.Model
 {
+    [Table("veterinary")]
     public class Veterinary
     {
-        public int id { get; set; }
+        [Key]
+        [Column("id")]
+        public int Id { get; set; }
 
         [Column("uuid")]
         public Guid Uuid { get; set; } = Guid.NewGuid();
@@ -18,6 +22,11 @@ namespace AgendarConsultas.Model
         [Column("email")]
         public string Email { get; set; } = string.Empty!;
 
-        public List<DateTime> DateOnly { get; set; } = default!;
+        [Column("schedule")]
+        public List<DateTime> Schedule { get; set; } = default!;
+        public int ConsultarionId { get; set; }
+        public Consultation? Consultation { get; set; }
+        public int ClinicId { get; set; }
+        public Clinic Clinic { get; set; } = default!;
     }
 }

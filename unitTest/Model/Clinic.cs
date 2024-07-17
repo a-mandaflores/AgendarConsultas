@@ -3,10 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AgendarConsultas.Model
 {
+    [Table("clinic")]
     public class Clinic
     {
         [Key]
-        public int id { get; set; }
+        [Column("id")]
+        public int Id { get; set; }
 
         [Column("uuid")]
         public Guid Uuid { get; set; } = Guid.NewGuid();
@@ -19,8 +21,14 @@ namespace AgendarConsultas.Model
 
         [Column("email")]
         public string Email { get; set; } = string.Empty!;
+
+        [Column("schedule")]
+        public List<DateTime> Schedule { get; set; } = default!;
+        public int SecretaryId { get; set; }
         public Secretary? Secretary { get; set; }
 
-        public Dictionary<string ,DateTime> Schedule { get; set; } = default!;
+        public List<Consultation>? Consultations { get; set; }
+        public List<Client>? Clients { get; set; }
+
     }
 }
