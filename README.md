@@ -51,10 +51,8 @@ Crie o banco de dados no SQL Server.
 Configure a string de conexão no arquivo appsettings.json:
 
 ```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=seu-servidor;Database=seu-banco-de-dados;User Id=seu-usuario;Password=sua-senha;"
-  }
+"ConnectionStrings": {
+  "ScheduleContext": "Data Source=Schedule.db"
 }
 ```
 
