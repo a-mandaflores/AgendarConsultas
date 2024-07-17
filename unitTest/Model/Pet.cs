@@ -27,6 +27,6 @@ namespace AgendarConsultas.Model
         public int ClientId { get; set; }
         public Client Client { get; set; } = default!;
         public int ConsultationId { get; set; } = default!;
-        public List<Consultation>? Consultations { get; set; }
+        public List<Consultation> Consultations { get; set; } = default!;
     }
 }

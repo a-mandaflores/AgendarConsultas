@@ -9,22 +9,22 @@ public class ScheduleContext(DbContextOptions<ScheduleContext> options) : DbCont
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Clinic>()
-            .HasOne(c => Secretary)
+            .HasOne(c => c.Secretary)
             .WithMany()
-            .HasForeignKey(c => Secretary)
+            .HasForeignKey(c => c.SecretaryId)
             .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Secretary>()
-            .HasOne(c => Secretary)
+            .HasOne(s => s.Clinic)
             .WithMany()
-            .HasForeignKey(c => Secretary)
+            .HasForeignKey(s => s.ClinicId)
             .OnDelete(DeleteBehavior.Cascade);
     }
-    public DbSet<Client> Clients { get; set; }
+   public DbSet<Client> Clients { get; set; }
     public DbSet<Clinic> Clinic { get; set; }
     public DbSet<Consultation> Consultations { get; set; }
     public DbSet<Pet> Pets { get; set; }
-    public DbSet<Secretary> Secretary { get; set; }
+    public DbSet<Secretary> Secretarys { get; set; }
     public DbSet<Veterinary> Veterinarys { get; set; }
 
 

@@ -25,7 +25,7 @@ namespace AgendarConsultas.Model
         [Column("schedule")]
         public List<DateTime> Schedule { get; set; } = default!;
         public int ConsultarionId { get; set; }
-        public Consultation? Consultation { get; set; }
+        public Consultation Consultation { get; set; } = default!;
         public int ClinicId { get; set; }
         public Clinic Clinic { get; set; } = default!;
     }

@@ -25,10 +25,10 @@ namespace AgendarConsultas.Model
         [Column("schedule")]
         public List<DateTime> Schedule { get; set; } = default!;
         public int SecretaryId { get; set; }
-        public Secretary? Secretary { get; set; }
+        public Secretary Secretary { get; set; } = default!;
 
-        public List<Consultation>? Consultations { get; set; }
-        public List<Client>? Clients { get; set; }
+        public List<Consultation> Consultations { get; set; } = default!;
+        public List<Client> Clients { get; set; } = default!;
 
     }
 }
