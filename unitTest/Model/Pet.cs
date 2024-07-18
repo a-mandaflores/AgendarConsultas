@@ -20,13 +20,15 @@ namespace AgendarConsultas.Model
         public string? Race { get; set; }
 
         [Column("year")]
-        public string Year { get; set; } = string.Empty!;
+        public int Year { get; set; }
 
-        [Column("schedule")]
-        public List<DateTime> Schedule { get; set; } = default!;
+        [Column("schedule_id")]
+        public int ScheduleId { get; set; }
+
+        [Column("clinic_id")]
         public int ClientId { get; set; }
+
         public Client Client { get; set; } = default!;
-        public int ConsultationId { get; set; } = default!;
         public List<Consultation> Consultations { get; set; } = default!;
     }
 }

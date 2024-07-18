@@ -23,10 +23,13 @@ namespace AgendarConsultas.Model
         public string Email { get; set; } = string.Empty!;
 
         [Column("schedule")]
-        public List<DateTime> Schedule { get; set; } = default!;
-        public int ConsultarionId { get; set; }
-        public Consultation Consultation { get; set; } = default!;
+        public List<DateTime> Avaible { get; set; } = default!;
+
+        public List<Consultation> Consultation { get; set; } = default!;
+
+        [Column("clinic_id")]
         public int ClinicId { get; set; }
+
         public Clinic Clinic { get; set; } = default!;
     }
 }

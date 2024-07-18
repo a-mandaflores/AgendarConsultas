@@ -24,8 +24,9 @@ namespace AgendarConsultas.Model
 
         public List<Pet> Pets { get; set; } = default!;
 
+        [Column("clinic_id")]
         public int ClinicId { get; set; }
-        public Clinic Clinic { get; set; } = default!;
 
+        public Clinic Clinic { get; set; } = default!;
     }
 }
