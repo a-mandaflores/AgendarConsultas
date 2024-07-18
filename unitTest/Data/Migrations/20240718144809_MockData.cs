@@ -7,25 +7,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AgendarConsultas.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class MockEntity : Migration
+    public partial class MockData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             new Faker<Client>("pt_BR")
-                .RuleFor(x => x.Name, f => f.Person.FullName)
-                .RuleFor(x => x.Cell, f => f.Phone.PhoneNumber())
-                .RuleFor(x => x.Email, (f, u) => f.Internet.Email(u.Name))
-                .RuleFor(x => x.ClinicId, f => f.Random.Int(1,5))
-                .Generate(15)
-                .ForEach(c =>
-                {
-                    migrationBuilder.InsertData(
-                        schema: "schedule",
-                        table: "client",
-                        columns: ["uuid", "name", "email", "cell", "clinic_id"],
-                        values: new object[,] { { Guid.NewGuid(), c.Name, c.Email, c.Cell, c.ClinicId } });
-                });
+               .RuleFor(x => x.Name, f => f.Person.FullName)
+               .RuleFor(x => x.Cell, f => f.Phone.PhoneNumber())
+               .RuleFor(x => x.Email, (f, u) => f.Internet.Email(u.Name))
+               .RuleFor(x => x.ClinicId, f => f.Random.Int(1, 5))
+               .Generate(15)
+               .ForEach(c =>
+               {
+                   migrationBuilder.InsertData(
+                       schema: "schedule",
+                       table: "client",
+                       columns: ["uuid", "name", "email", "cell", "clinic_id"],
+                       values: new object[,] { { Guid.NewGuid(), c.Name, c.Email, c.Cell, c.ClinicId } });
+               });
 
             new Faker<Clinic>("pt_BR")
                .RuleFor(x => x.Name, f => f.Company.CompanyName())
@@ -86,9 +86,12 @@ namespace AgendarConsultas.Data.Migrations
                         values: new object[,] { { Guid.NewGuid(), c.Name, c.Email, c.Cell, c.ClinicId } });
                 });
 
-            
         }
 
-      
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+
+        }
     }
 }

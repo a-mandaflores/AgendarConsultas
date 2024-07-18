@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendarConsultas.Data.Migrations
 {
     [DbContext(typeof(ScheduleContext))]
-    [Migration("20240717235311_AddSql")]
-    partial class AddSql
+    [Migration("20240718144425_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,8 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnName("cell");
 
                     b.Property<int>("ClinicId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("clinic_id");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -77,20 +78,14 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("Schedule")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("schedule");
-
-                    b.Property<int>("SecretaryId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("Uuid")
                         .HasColumnType("TEXT")
                         .HasColumnName("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SecretaryId");
 
                     b.ToTable("clinic");
                 });
@@ -103,22 +98,24 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnName("id");
 
                     b.Property<int>("ClinicId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("clinic_id");
 
-                    b.Property<int>("PetId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Schedule")
-                        .IsRequired()
+                    b.Property<DateTime>("Date")
                         .HasColumnType("TEXT")
                         .HasColumnName("schedule");
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("pet_id");
 
                     b.Property<Guid>("Uuid")
                         .HasColumnType("TEXT")
                         .HasColumnName("uuid");
 
                     b.Property<int>("VeterinaryId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("veterinary_id");
 
                     b.HasKey("Id");
 
@@ -126,8 +123,7 @@ namespace AgendarConsultas.Data.Migrations
 
                     b.HasIndex("PetId");
 
-                    b.HasIndex("VeterinaryId")
-                        .IsUnique();
+                    b.HasIndex("VeterinaryId");
 
                     b.ToTable("consultation");
                 });
@@ -140,10 +136,8 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnName("id");
 
                     b.Property<int>("ClientId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ConsultationId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("clinic_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -154,18 +148,12 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("race");
 
-                    b.Property<string>("Schedule")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("schedule");
-
                     b.Property<Guid>("Uuid")
                         .HasColumnType("TEXT")
                         .HasColumnName("uuid");
 
-                    b.Property<string>("Year")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
+                    b.Property<int>("Year")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("year");
 
                     b.HasKey("Id");
@@ -183,12 +171,12 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("Cell")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("cell");
 
                     b.Property<int>("ClinicId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("clinic_id");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -222,10 +210,8 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnName("cell");
 
                     b.Property<int>("ClinicId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ConsultarionId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("clinic_id");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -238,7 +224,6 @@ namespace AgendarConsultas.Data.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("Schedule")
-                        .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("schedule");
 
@@ -264,17 +249,6 @@ namespace AgendarConsultas.Data.Migrations
                     b.Navigation("Clinic");
                 });
 
-            modelBuilder.Entity("AgendarConsultas.Model.Clinic", b =>
-                {
-                    b.HasOne("AgendarConsultas.Model.Secretary", "Secretary")
-                        .WithMany()
-                        .HasForeignKey("SecretaryId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Secretary");
-                });
-
             modelBuilder.Entity("AgendarConsultas.Model.Consultation", b =>
                 {
                     b.HasOne("AgendarConsultas.Model.Clinic", "Clinic")
@@ -290,8 +264,8 @@ namespace AgendarConsultas.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("AgendarConsultas.Model.Veterinary", "Veterinary")
-                        .WithOne("Consultation")
-                        .HasForeignKey("AgendarConsultas.Model.Consultation", "VeterinaryId")
+                        .WithMany("Consultation")
+                        .HasForeignKey("VeterinaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -316,7 +290,7 @@ namespace AgendarConsultas.Data.Migrations
             modelBuilder.Entity("AgendarConsultas.Model.Secretary", b =>
                 {
                     b.HasOne("AgendarConsultas.Model.Clinic", "Clinic")
-                        .WithMany()
+                        .WithMany("Secretary")
                         .HasForeignKey("ClinicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -345,6 +319,8 @@ namespace AgendarConsultas.Data.Migrations
                     b.Navigation("Clients");
 
                     b.Navigation("Consultations");
+
+                    b.Navigation("Secretary");
                 });
 
             modelBuilder.Entity("AgendarConsultas.Model.Pet", b =>
@@ -354,8 +330,7 @@ namespace AgendarConsultas.Data.Migrations
 
             modelBuilder.Entity("AgendarConsultas.Model.Veterinary", b =>
                 {
-                    b.Navigation("Consultation")
-                        .IsRequired();
+                    b.Navigation("Consultation");
                 });
 #pragma warning restore 612, 618
         }

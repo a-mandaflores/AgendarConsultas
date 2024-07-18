@@ -23,7 +23,7 @@ namespace AgendarConsultas.Model
         public string Email { get; set; } = string.Empty!;
 
         [Column("schedule")]
-        public List<DateTime> Avaible { get; set; } = default!;
+        public List<DateTime>? Schedule { get; set; }
 
         public List<Consultation> Consultation { get; set; } = default!;
 

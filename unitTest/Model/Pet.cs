@@ -22,12 +22,8 @@ namespace AgendarConsultas.Model
         [Column("year")]
         public int Year { get; set; }
 
-        [Column("schedule_id")]
-        public int ScheduleId { get; set; }
-
         [Column("clinic_id")]
         public int ClientId { get; set; }
-
         public Client Client { get; set; } = default!;
         public List<Consultation> Consultations { get; set; } = default!;
     }

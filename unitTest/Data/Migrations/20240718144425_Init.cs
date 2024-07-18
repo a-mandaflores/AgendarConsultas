@@ -6,53 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AgendarConsultas.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSql : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "client",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    uuid = table.Column<Guid>(type: "TEXT", nullable: false),
-                    name = table.Column<string>(type: "TEXT", nullable: false),
-                    cell = table.Column<string>(type: "TEXT", nullable: true),
-                    email = table.Column<string>(type: "TEXT", nullable: false),
-                    ClinicId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_client", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "pet",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    uuid = table.Column<Guid>(type: "TEXT", nullable: false),
-                    name = table.Column<string>(type: "TEXT", nullable: false),
-                    race = table.Column<string>(type: "TEXT", nullable: true),
-                    year = table.Column<string>(type: "TEXT", nullable: false),
-                    schedule = table.Column<string>(type: "TEXT", nullable: false),
-                    ClientId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ConsultationId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_pet", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_pet_client_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "client",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateTable(
                 name: "clinic",
                 columns: table => new
@@ -63,12 +21,34 @@ namespace AgendarConsultas.Data.Migrations
                     name = table.Column<string>(type: "TEXT", nullable: false),
                     cell = table.Column<string>(type: "TEXT", nullable: true),
                     email = table.Column<string>(type: "TEXT", nullable: false),
-                    schedule = table.Column<string>(type: "TEXT", nullable: false),
-                    SecretaryId = table.Column<int>(type: "INTEGER", nullable: false)
+                    schedule = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_clinic", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "client",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    uuid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", nullable: false),
+                    cell = table.Column<string>(type: "TEXT", nullable: true),
+                    email = table.Column<string>(type: "TEXT", nullable: false),
+                    clinic_id = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_client", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_client_clinic_clinic_id",
+                        column: x => x.clinic_id,
+                        principalTable: "clinic",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,16 +59,16 @@ namespace AgendarConsultas.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Uuid = table.Column<Guid>(type: "TEXT", nullable: false),
                     name = table.Column<string>(type: "TEXT", nullable: false),
-                    cell = table.Column<string>(type: "TEXT", nullable: false),
+                    cell = table.Column<string>(type: "TEXT", nullable: true),
                     email = table.Column<string>(type: "TEXT", nullable: false),
-                    ClinicId = table.Column<int>(type: "INTEGER", nullable: false)
+                    clinic_id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_secretary", x => x.id);
                     table.ForeignKey(
-                        name: "FK_secretary_clinic_ClinicId",
-                        column: x => x.ClinicId,
+                        name: "FK_secretary_clinic_clinic_id",
+                        column: x => x.clinic_id,
                         principalTable: "clinic",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -104,17 +84,39 @@ namespace AgendarConsultas.Data.Migrations
                     name = table.Column<string>(type: "TEXT", nullable: false),
                     cell = table.Column<string>(type: "TEXT", nullable: true),
                     email = table.Column<string>(type: "TEXT", nullable: false),
-                    schedule = table.Column<string>(type: "TEXT", nullable: false),
-                    ConsultarionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClinicId = table.Column<int>(type: "INTEGER", nullable: false)
+                    schedule = table.Column<string>(type: "TEXT", nullable: true),
+                    clinic_id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_veterinary", x => x.id);
                     table.ForeignKey(
-                        name: "FK_veterinary_clinic_ClinicId",
-                        column: x => x.ClinicId,
+                        name: "FK_veterinary_clinic_clinic_id",
+                        column: x => x.clinic_id,
                         principalTable: "clinic",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "pet",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    uuid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    name = table.Column<string>(type: "TEXT", nullable: false),
+                    race = table.Column<string>(type: "TEXT", nullable: true),
+                    year = table.Column<int>(type: "INTEGER", nullable: false),
+                    clinic_id = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_pet", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_pet_client_clinic_id",
+                        column: x => x.clinic_id,
+                        principalTable: "client",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -126,101 +128,78 @@ namespace AgendarConsultas.Data.Migrations
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     uuid = table.Column<Guid>(type: "TEXT", nullable: false),
-                    schedule = table.Column<string>(type: "TEXT", nullable: false),
-                    PetId = table.Column<int>(type: "INTEGER", nullable: false),
-                    VeterinaryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClinicId = table.Column<int>(type: "INTEGER", nullable: false)
+                    schedule = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    pet_id = table.Column<int>(type: "INTEGER", nullable: false),
+                    veterinary_id = table.Column<int>(type: "INTEGER", nullable: false),
+                    clinic_id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_consultation", x => x.id);
                     table.ForeignKey(
-                        name: "FK_consultation_clinic_ClinicId",
-                        column: x => x.ClinicId,
+                        name: "FK_consultation_clinic_clinic_id",
+                        column: x => x.clinic_id,
                         principalTable: "clinic",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_consultation_pet_PetId",
-                        column: x => x.PetId,
+                        name: "FK_consultation_pet_pet_id",
+                        column: x => x.pet_id,
                         principalTable: "pet",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_consultation_veterinary_VeterinaryId",
-                        column: x => x.VeterinaryId,
+                        name: "FK_consultation_veterinary_veterinary_id",
+                        column: x => x.veterinary_id,
                         principalTable: "veterinary",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_client_ClinicId",
+                name: "IX_client_clinic_id",
                 table: "client",
-                column: "ClinicId");
+                column: "clinic_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_clinic_SecretaryId",
-                table: "clinic",
-                column: "SecretaryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_consultation_ClinicId",
+                name: "IX_consultation_clinic_id",
                 table: "consultation",
-                column: "ClinicId");
+                column: "clinic_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_consultation_PetId",
+                name: "IX_consultation_pet_id",
                 table: "consultation",
-                column: "PetId");
+                column: "pet_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_consultation_VeterinaryId",
+                name: "IX_consultation_veterinary_id",
                 table: "consultation",
-                column: "VeterinaryId",
-                unique: true);
+                column: "veterinary_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_pet_ClientId",
+                name: "IX_pet_clinic_id",
                 table: "pet",
-                column: "ClientId");
+                column: "clinic_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_secretary_ClinicId",
+                name: "IX_secretary_clinic_id",
                 table: "secretary",
-                column: "ClinicId");
+                column: "clinic_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_veterinary_ClinicId",
+                name: "IX_veterinary_clinic_id",
                 table: "veterinary",
-                column: "ClinicId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_client_clinic_ClinicId",
-                table: "client",
-                column: "ClinicId",
-                principalTable: "clinic",
-                principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_clinic_secretary_SecretaryId",
-                table: "clinic",
-                column: "SecretaryId",
-                principalTable: "secretary",
-                principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                column: "clinic_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_secretary_clinic_ClinicId",
-                table: "secretary");
-
             migrationBuilder.DropTable(
                 name: "consultation");
+
+            migrationBuilder.DropTable(
+                name: "secretary");
 
             migrationBuilder.DropTable(
                 name: "pet");
@@ -233,9 +212,6 @@ namespace AgendarConsultas.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "clinic");
-
-            migrationBuilder.DropTable(
-                name: "secretary");
         }
     }
 }

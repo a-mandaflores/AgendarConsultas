@@ -23,12 +23,8 @@ namespace AgendarConsultas.Model
         public string Email { get; set; } = string.Empty!;
 
         [Column("schedule")]
-        public List<DateTime> Avaible { get; set; } = default!;
-
-        [Column("scretary_id")]
-        public int SecretaryId { get; set; }
-
-        public Secretary Secretary { get; set; } = default!;
+        public List<DateTime>? Schedule { get; set; }
+        public List<Secretary> Secretary { get; set; } = default!;
         public List<Consultation> Consultations { get; set; } = default!;
         public List<Client> Clients { get; set; } = default!;
     }
